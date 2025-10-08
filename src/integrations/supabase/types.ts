@@ -14,16 +14,215 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clothes: {
+        Row: {
+          color: string
+          created_at: string
+          id: string
+          order_id: string
+          price_per_item: number
+          quantity: number
+          type: string
+        }
+        Insert: {
+          color: string
+          created_at?: string
+          id?: string
+          order_id: string
+          price_per_item: number
+          quantity: number
+          type: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          id?: string
+          order_id?: string
+          price_per_item?: number
+          quantity?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clothes_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clothing_types: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      customers: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          phone: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          phone: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          phone?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          amount_paid: number
+          collection_date: string
+          created_at: string
+          customer_id: string
+          date_received: string
+          id: string
+          payment_mode: Database["public"]["Enums"]["payment_mode"]
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          receipt_number: string
+          status: Database["public"]["Enums"]["order_status"]
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          amount_paid?: number
+          collection_date: string
+          created_at?: string
+          customer_id: string
+          date_received?: string
+          id?: string
+          payment_mode?: Database["public"]["Enums"]["payment_mode"]
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          receipt_number: string
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount?: number
+          updated_at?: string
+        }
+        Update: {
+          amount_paid?: number
+          collection_date?: string
+          created_at?: string
+          customer_id?: string
+          date_received?: string
+          id?: string
+          payment_mode?: Database["public"]["Enums"]["payment_mode"]
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          receipt_number?: string
+          status?: Database["public"]["Enums"]["order_status"]
+          total_amount?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          role: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          role?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          role?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      storage_fees: {
+        Row: {
+          amount: number
+          created_at: string
+          date_added: string
+          id: string
+          order_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          date_added?: string
+          id?: string
+          order_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          date_added?: string
+          id?: string
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "storage_fees_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_receipt_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
-      [_ in never]: never
+      order_status: "pending" | "completed" | "overdue"
+      payment_mode: "cash" | "mpesa" | "none"
+      payment_status: "full" | "deposit" | "unpaid"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +349,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      order_status: ["pending", "completed", "overdue"],
+      payment_mode: ["cash", "mpesa", "none"],
+      payment_status: ["full", "deposit", "unpaid"],
+    },
   },
 } as const
